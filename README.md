@@ -41,8 +41,8 @@ and run it on your server, just drop `bil.sty` file from `<GTA2 root folder>\dat
 root folder.
 
 ## Online link
-https://gtamp.com/GTA2/style-viewer
-https://maseuko.pl/soft/styjs/ (old version without PS1 support)
+- https://gtamp.com/GTA2/style-viewer
+- https://maseuko.pl/soft/styjs/ (old version without PS1 support)
 
 ## Author(s)
 masuo (aka. izawartka)
