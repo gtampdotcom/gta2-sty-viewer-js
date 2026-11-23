@@ -1,8 +1,6 @@
 # GTA2 PlayStation STY format (work in progress)
 
-Notes from reverse engineering `DATA/BIL.STY`, `STE.STY` and `WIL.STY` on the US disc (SLUS-00789), checked against
-the PC files and a DuckStation VRAM dump. Implemented in `js/sty_ps1.js`. The PC format is documented in
-[gta2formats.zip](https://gtamp.com/GTA2/gta2formats.zip).
+Notes from reverse engineering `DATA/BIL.STY`, `STE.STY` and `WIL.STY` on the US disc (SLUS-00789).
 
 The PS1 file has no `GBST` header and no chunks: it is a run of tables, an end marker, then the pixel data. Everything
 is little-endian. The three city files share the layout; table lengths differ slightly (e.g. STE's header is 0x128 bytes
