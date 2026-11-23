@@ -22,6 +22,12 @@ A web viewer for GTA2 graphics files (.sty) written from scratch in pure JS. Fea
     - Info about specific colors 
 - Info about palette bases (virtual palettes count)
 - Fonts list
+- PlayStation style files (`DATA/BIL.STY`, `STE.STY`, `WIL.STY` from the PS1 disc), detected automatically:
+    - Tiles (32x32) with their own palettes, materials
+    - Sprites and fonts in their own palettes, cars at 8 bits per pixel with the mirrored half filled in
+    - Sprite palettes, car and ped remaps
+    - Cars with their info, remaps, doors and deltas
+    - Format notes: [PS1_STY_FORMAT.md](PS1_STY_FORMAT.md)
 
 ## To do
 - Editor

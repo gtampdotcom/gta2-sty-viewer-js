@@ -41,7 +41,7 @@ export class TilesPage {
         this.renderer.renderTilesList(tilesCanv);
         tilesCanv.onmousemove = (e) => {
             let tileID = this.renderer.getPointedTileID(tilesCanv, e);
-            this.elements.tilesmove.innerHTML = `<b>ID:</b> ${tileID} / <b>Page:</b> ${~~(tileID/16)}`;
+            this.elements.tilesmove.innerHTML = `<b>ID:</b> ${tileID} / <b>Page:</b> ${~~(tileID/this.renderer.tileLayout().perPage)}`;
         }
         tilesCanv.onclick = (e) => {
             let tileID = this.renderer.getPointedTileID(tilesCanv, e);

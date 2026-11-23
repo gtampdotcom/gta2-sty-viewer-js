@@ -72,32 +72,41 @@ export class Renderer {
 
     ////////////////////////////////
 
+    // tiles are 64x64 on PC (16 per 256x256 page) and 32x32 on PS1 (64 per page)
+    tileLayout() {
+        const size = this.sty.tileSize || 64;
+        const perRow = 256 / size;
+        return { size, perRow, perPage: perRow*perRow };
+    }
+
     renderTilesList(canvas) {
+        const { size, perRow, perPage } = this.tileLayout();
         let tilesCount = this.sty.data.tiles.length;
-        let pagesCount = Math.ceil(tilesCount/16);
+        let pagesCount = Math.ceil(tilesCount/perPage);
         canvas.width = 256 * pagesCount;
         canvas.height = 256;
         const ctx = canvas.getContext('2d');
 
         for(let i = 0; i < tilesCount; i++) {
-            let x = ~~(i/16)*4+(i%4);
-            let y = ~~(i/4)%4;
+            let x = ~~(i/perPage)*perRow+(i%perRow);
+            let y = ~~(i/perRow)%perRow;
             let imgData = this.sty.data.tiles[i].bitmap.getImgData();
 
-            ctx.putImageData(imgData, x*64, y*64);
+            ctx.putImageData(imgData, x*size, y*size);
         }
     }
 
     getPointedTileID(canvas, e) {
+        const { size, perRow, perPage } = this.tileLayout();
         let pos = this.getRelativePos(canvas, e);
         let pageID = ~~(pos.x / 256);
-        let tileIDinPage = ~~((pos.x % 256)/64) + (~~(pos.y/64))*4;
+        let tileIDinPage = ~~((pos.x % 256)/size) + (~~(pos.y/size))*perRow;
 
-        return pageID*16+tileIDinPage;
+        return pageID*perPage+tileIDinPage;
     }
 
     renderSpritesList(canvas) {
-        canvas.width = 256 * this.sty.data.spritePagesCount;
+        canvas.width = (this.sty.spritePageWidth || 256) * this.sty.data.spritePagesCount;
         canvas.height = 256;
         const ctx = canvas.getContext('2d');
 
@@ -113,7 +122,7 @@ export class Renderer {
     getPointedSprite(canvas, e) {
         const sprites = this.sty.getSpritesAsArray();
         let pos = this.getRelativePos(canvas, e);
-        let page = ~~(pos.x / 256);
+        let page = ~~(pos.x / (this.sty.spritePageWidth || 256));
 
         for(let i = 0; i < sprites.length; i++) {
             if(sprites[i].pageID != page) continue;

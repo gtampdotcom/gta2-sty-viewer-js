@@ -4,7 +4,8 @@ export class OMSprite {
     constructor(base, relID, index, data, virtualPalette) {
         this.base = base;
         this.relID = relID;
-        [this.pageID, this.x, this.y, this.absX] = this.ptrToLoc(index.ptr);
+        // PS1 sprites come with their location already worked out (4bpp pages are 512 pixels wide)
+        [this.pageID, this.x, this.y, this.absX] = index.loc || this.ptrToLoc(index.ptr);
         this.bitmap = new OMBitmap(data, index.width, index.height, virtualPalette);
         this.deltas = [];
     }

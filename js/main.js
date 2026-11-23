@@ -1,4 +1,5 @@
 import { STY } from './sty.js';
+import { STYPS1 } from './sty_ps1.js';
 import { Renderer } from './renderer.js';
 import { Tabs } from './tabs.js';
 import { elementsNames } from './constants.js';
@@ -52,7 +53,11 @@ class Main {
         this.getFileData()
             .then((data)=>{
                 this.log('Reading...');
-                this.sty = new STY(data);
+                const magic = String.fromCharCode.apply(String, new Uint8Array(data, 0, 4));
+                if(magic != 'GBST' && STYPS1.looksLikePS1(data))
+                    this.sty = new STYPS1(data);
+                else
+                    this.sty = new STY(data);
                 if(!this.sty.isFileCorrect()) {
                     this.log('Error while reading: Incorrect file');
                     this.busy = false;
@@ -61,9 +66,10 @@ class Main {
                 this.log('Rendering...');
                 this.render()
                     .then(()=>{
-                        this.log('Done!');
+                        this.log(this.sty.isPS1 ? 'Done! (PlayStation STY)' : 'Done!');
                         this.busy = false;
                         this.tabs.lockAllTabs(false);
+                        if(!this.sty.data.cars.length) this.tabs.lockTab('vehicles', true);
                         console.log(this);
                     });
             }, (error)=>{
@@ -98,11 +104,13 @@ class Main {
 
             this.tilesPage = new TilesPage(this.elements, this.sty, this.renderer);
             this.spritesPage = new SpritesPage(this.elements, this.sty, this.renderer);
-            this.carsPage = new CarsPage(this.elements, this.sty, this.renderer, this.tabs);
-            this.carsPage.addSpritesPageReference((baseName, spriteID) => {
-                this.tabs.showTab('sprites');
-                this.spritesPage.goToSprite(baseName, spriteID);
-            });
+            if(this.sty.data.cars.length) {
+                this.carsPage = new CarsPage(this.elements, this.sty, this.renderer, this.tabs);
+                this.carsPage.addSpritesPageReference((baseName, spriteID) => {
+                    this.tabs.showTab('sprites');
+                    this.spritesPage.goToSprite(baseName, spriteID);
+                });
+            }
             this.ppalPage = new PalPage(this.elements, this.sty, this.renderer);
             this.fontsPage = new FontsPage(this.elements, this.sty, this.renderer);
             resolve();    
