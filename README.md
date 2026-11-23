@@ -48,4 +48,4 @@ root folder.
 masuo (aka. izawartka)
 
 ## STY format documentation
-[https://gtamp.com/GTA2/gta2formats.zip](https://gtamp.com/gta2/gta2-style-sty-graphics-file-format/)
+https://gtamp.com/gta2/gta2-style-sty-graphics-file-format/
